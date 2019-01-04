@@ -25,11 +25,22 @@ import java.util.Set;
  */
 public class AdjacencyMatrixGraph extends Graph {
 
-    /* ************************************************************ */
-    /* The following data field is the inner representation         */
-    /* of your graph. You should not change this data field!        */
-    /* ***********************************************************  */
+    /* ****************************************************** */
+    /* THE FOLLOWING DATA FIELD IS THE INNER REPRESENTATION */
+    /* OF YOUR GRAPH. YOU SHOULD NOT CHANGE THIS DATA FIELD! */
+    /* ******************************************************  */
+
     private int[][] matrix;
+
+    /* ***************************************************** */
+    /* PLACE ANY EXTRA PRIVATE DATA MEMBERS OR METHODS HERE: */
+    /* ***************************************************** */
+
+
+    /* ************************************************** */
+    /* IMPLEMENT THE FOLLOWING PUBLIC METHODS. MAKE SURE  */
+    /* YOU ERASE THE LINES THAT THROW EXCEPTIONS.         */
+    /* ************************************************** */
 
     /**
      * A default (no-arg) constructor for {@link AdjacencyMatrixGraph} <b>should</b> exist,

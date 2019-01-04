@@ -42,13 +42,13 @@ public abstract class Graph {
     public abstract void addNode();
 
     /**
-     * <p>Adds an edge from node <tt>source</tt> to node <tt>dest</tt> in the graph, attaching to it weight equal to
-     * <tt>weight</tt>. In this implementation, we <b>don't allow</b> weights to be negative. If a weight that
+     * <p>Adds an edge from node source to node dest in the graph, attaching to it weight equal to
+     * weight. In this implementation, we <b>don't allow</b> weights to be negative. If a weight that
      * is either negative or greater than {@link #INFINITY} is provided, the method should throw a
      * {@link RuntimeException}. If the edge already exists, <b>its weight should be updated to the parameter
      * value.</b></p>
      *
-     * <p>If either <tt>source</tt> or <tt>dest</tt> don't exist in the graph, the behavior is <i>undefined</i>. This
+     * <p>If either source or dest don't exist in the graph, the behavior is <i>undefined</i>. This
      * means that you can do <b>whatever</b> you want, as long as you don't store extra edges or nodes in the graph. You
      * can throw a {@link RuntimeException}, return null, print a message, anything. We do <b>not</b> test for this case.</p>
      *
@@ -59,12 +59,12 @@ public abstract class Graph {
      * @param dest The &quot;sink&quot; node of the edge.
      * @param weight  The weight of the edge.
      *
-     * @throws RuntimeException if <tt>weight</tt> &lt; 0 or <tt>weight</tt> &gt; {@link #INFINITY}
+     * @throws RuntimeException if weight &lt; 0 or weight &gt; {@link #INFINITY}
      */
     public abstract void addEdge(int source, int dest, int weight) throws RuntimeException;
 
     /**
-     * <p>Delete the edge from <tt>source</tt> to <tt>dest</tt>. If the edge does not exist, or if either node does <b>not</b> exist
+     * <p>Delete the edge from source to dest. If the edge does not exist, or if either node does <b>not</b> exist
      * in the graph, no action should be performed.</p>
      * <p>We would like to particularly stress that <b>removing an edge does not in any way imply removing its constituent nodes,
      * even if the nodes end up being singleton disconnected components!</b></p>
@@ -74,8 +74,8 @@ public abstract class Graph {
     public abstract void deleteEdge(int source, int dest);
 
     /**
-     * <p>Queries the graph about the existence of an edge from <tt>source</tt> to <tt>dest</tt>. If either <tt>source</tt>
-     * or <tt>dest</tt> are not contained by the graph, then the edge itself cannot possibly exist and the method should return
+     * <p>Queries the graph about the existence of an edge from source to dest. If either source
+     * or dest are not contained by the graph, then the edge itself cannot possibly exist and the method should return
      * <b>false</b>.</p>
      * @param source The source node of the edge.
      * @param dest The &quot; sink &quot; of the edge.
@@ -120,7 +120,7 @@ public abstract class Graph {
      * negative weight edges, you can implement this with either Dijkstra's or the Bellman-Ford algorithm, whichever one
      * you prefer!</p>
      *
-     * <p>Shortest path computation only requires methods of {@link Graph}'s interface (i.e the other <tt>public</tt>
+     * <p>Shortest path computation only requires methods of {@link Graph}'s interface (i.e the other public
      * methods). For this reason, defining it only once, in the base class, is the best approach. This <b>does</b>,
      * however, require that {@link Graph} is made into an abstract class instead of an interface.</p>
      * <p>Notes:</p>
@@ -134,8 +134,8 @@ public abstract class Graph {
      *      <li>If either source or dest are not part of the graph, the behavior is <b>undefined</b>
      *          (we don't test for this case).</li>
      *
-     *      <li>Since {@link Graph} represents <b>directed graphs</b>, even if <tt>source == dest</tt>, there
-     *          <b>may not exist</b> a path that connects <tt>source</tt> and <tt>dest</tt>.</li>
+     *      <li>Since {@link Graph} represents <b>directed graphs</b>, even if source == dest, there
+     *          <b>may not exist</b> a path that connects source and dest.</li>
      *
      *      <li>If there is no path from source to dest, the list returned should be <b>completely empty</b>.</li>
      *
@@ -145,8 +145,8 @@ public abstract class Graph {
      *
      * @param source The source node of the edge.
      * @param dest The &quot; sink &quot; node of the edge.
-     * @return An ordered {@link List} whose first (head) element is <tt>source</tt>, the last (tail) element is <tt>dest</tt>
-     * and all the intermediate nodes make up the path from <tt>source</tt> to <tt>dest</tt>.
+     * @return An ordered {@link List} whose first (head) element is source, the last (tail) element is dest
+     * and all the intermediate nodes make up the path from source to dest.
      */
     public List<Integer> shortestPath(int source, int dest){
         throw UNIMPL_METHOD;

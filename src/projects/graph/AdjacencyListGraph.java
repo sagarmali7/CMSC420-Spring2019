@@ -19,10 +19,10 @@ import java.util.List;
  */
 public class AdjacencyListGraph extends Graph {
 
-    /* ********************************************************************** */
-    /* The following class and data field is the inner representation of your */
-    /* graph. You should not change this data field!                          */
-    /* *********************************************************************  */
+    /* ******************************************************************************* */
+    /* THE FOLLOWING CLASS DECLARATION AND DATA FIELD MAKE UP THE INNER REPRESENTATION */
+    /* OF YOUR GRAPH. YOU SHOULD NOT CHANGE THIS DATA FIELD!                           */
+    /* ******************************************************************************  */
 
     class NeighborData{
         int neighborNode;
@@ -33,6 +33,16 @@ public class AdjacencyListGraph extends Graph {
         }
     }
     private List<NeighborData>[] list;
+
+    /* ***************************************************** */
+    /* PLACE ANY EXTRA PRIVATE DATA MEMBERS OR METHODS HERE: */
+    /* ***************************************************** */
+
+
+    /* ************************************************** */
+    /* IMPLEMENT THE FOLLOWING PUBLIC METHODS. MAKE SURE  */
+    /* YOU ERASE THE LINES THAT THROW EXCEPTIONS.         */
+    /* ************************************************** */
 
     /**
      * A default (no-arg) constructor for {@link AdjacencyListGraph} <b>should</b> exist,
