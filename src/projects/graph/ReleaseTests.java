@@ -29,7 +29,6 @@ public class ReleaseTests {
      * Graph instances.
      */
 
-
     private void testAddNode(Graph graph){
         for(int ignored = 0; ignored < 7; ignored++)
             graph.addNode();

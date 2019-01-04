@@ -19,11 +19,21 @@ import java.util.List;
  */
 public class AdjacencyListGraph extends Graph {
 
-    /* ************************************************************ */
-    /* The following data field is the inner representation         */
-    /* of your graph. You should not change this data field!        */
-    /* ***********************************************************  */
-    private List<Integer>[] list;
+    /* ********************************************************************** */
+    /* The following class and data field is the inner representation of your */
+    /* graph. You should not change this data field!                          */
+    /* *********************************************************************  */
+
+    class NeighborData{
+        int neighborNode;
+        int weight;
+        NeighborData(int neighborNode, int weight){
+            this.neighborNode = neighborNode;
+            this.weight = weight;
+        }
+    }
+    private List<NeighborData>[] list;
+
     /**
      * A default (no-arg) constructor for {@link AdjacencyListGraph} <b>should</b> exist,
      * even if you don't do anything with it.
