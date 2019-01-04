@@ -1,0 +1,37 @@
+### Binaries and class files
+/bin
+/out
+/build
+*.class
+*.exe
+*.a
+*.o
+*.s
+*.pyc
+*.mat
+
+### IntelliJ / Eclipse - related
+/.idea
+*.iml
+*.eclipse
+
+### Hidden and backup files of OSs
+*.~
+*.bak
+*.save
+
+### LaTeX stuff
+*.synctex.gz
+*.dvi
+*.out
+*.log
+*.toc
+*.aux
+*.nav
+*.bst
+
+
+
+# Mac OS
+
+/.DS_Store/
