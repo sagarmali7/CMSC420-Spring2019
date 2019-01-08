@@ -94,8 +94,8 @@ public abstract class Graph {
     public abstract int getEdgeWeight(int source, int dest);
 
     /**
-     * <p>Retrieves the &quot;neighbor&quot; nodes of the provided node, i.e all the nodes to which it is connected (whether it is the source <b>OR</b>
-     * sink). If the node does <b>not</b> exist in the graph, the behavior is <b>undefined</b>; you can do whatever you want (and that helps you debug!)
+     * <p>Retrieves the &quot;neighbor&quot; nodes of the provided node, i.e all the nodes to which it points.
+     * If the node does <b>not</b> exist in the graph, the behavior is <b>undefined</b>; you can do whatever you want (and that helps you debug!)
      * and we don't test for it. If the node <b>does</b> exist in the graph but it has no neighbors, the returned {@link Set} should be non-null,
      * but  <b>empty (size 0)</b>.</p>
      * @param node The node to retrieve the neighbors of.

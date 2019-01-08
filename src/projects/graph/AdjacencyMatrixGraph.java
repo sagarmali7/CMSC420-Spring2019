@@ -1,6 +1,10 @@
 package projects.graph;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * <p>{@link AdjacencyMatrixGraph} is a {@link Graph} implemented as an <b>adjacency matrix</b>. An adjacency matrix
@@ -35,7 +39,7 @@ public class AdjacencyMatrixGraph extends Graph {
     /* ***************************************************** */
     /* PLACE ANY EXTRA PRIVATE DATA MEMBERS OR METHODS HERE: */
     /* ***************************************************** */
-
+    private int numNodes, numEdges;
 
     /* ************************************************** */
     /* IMPLEMENT THE FOLLOWING PUBLIC METHODS. MAKE SURE  */
@@ -49,47 +53,68 @@ public class AdjacencyMatrixGraph extends Graph {
     public AdjacencyMatrixGraph(){
         // You might not want this constructor to do anything, depending on your design.
         // At any rate, DO NOT ERASE IT!
+        numNodes = numEdges = 0;
+        matrix = new int[numNodes][numNodes];
     }
 
     @Override
     public void addNode() {
-        throw UNIMPL_METHOD;
+        int[][] oldMatrix = matrix;
+        matrix = new int[numNodes][numNodes];
+        for(int i = 0; i < numNodes - 1; i++)
+            matrix[i] = oldMatrix[i]; // Copy over the old rows instead of all the elements (O(V) instead of O(V^2))
+        matrix[numNodes - 1] = new int[numNodes]; // And add a last row of zeroes.
+        numNodes++;
     }
 
     @Override
     public void addEdge(int source, int dest, int weight) {
-        throw UNIMPL_METHOD;
+        // I throw an AssertionError if either node isn't within parameters. Behavior open to implementation according to docs.
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+            "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
+        if(weight < 0 || weight > INFINITY)
+            throw new RuntimeException("addEdge(): Weight given out of bounds (weight=" + weight + ").");
+        matrix[source][dest] = weight;
+        numEdges++;
     }
 
 
     @Override
     public void deleteEdge(int source, int dest) {
-        throw UNIMPL_METHOD;
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
+        matrix[source][dest] = 0;
+        numEdges--;
     }
 
     @Override
     public boolean edgeBetween(int source, int dest) {
-        throw UNIMPL_METHOD;
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
+        return matrix[source][dest] != 0;
     }
 
     @Override
     public int getEdgeWeight(int source, int dest) {
-        throw UNIMPL_METHOD;
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
+        return matrix[source][dest];
     }
 
     @Override
     public Set<Integer> getNeighbors(int node) {
-        throw UNIMPL_METHOD;
+        assert node >= 0 && node < numNodes : "getNeighbors(): Invalid node parameter given: " + node + ".";
+        return Arrays.stream(matrix[node]).filter(n->n>0).boxed().collect(Collectors.toSet());
     }
 
     @Override
     public int getNumNodes() {
-        throw UNIMPL_METHOD;
+        return numNodes;
     }
 
     @Override
     public int getNumEdges() {
-        throw UNIMPL_METHOD;
+        return numEdges;
     }
 
 
@@ -106,7 +131,12 @@ public class AdjacencyMatrixGraph extends Graph {
      * @return A {@link SparseAdjacencyMatrixGraph} instance.
      */
     public SparseAdjacencyMatrixGraph toSparseAdjacencyMatrixGraph(){
-        throw UNIMPL_METHOD;
+        SparseAdjacencyMatrixGraph spAdjMatGraph = new SparseAdjacencyMatrixGraph();
+        IntStream.range(0, numNodes).forEach(ignored->spAdjMatGraph.addNode());
+
+        addAllToGraph(spAdjMatGraph);
+
+        return spAdjMatGraph;
     }
 
     /**
@@ -120,6 +150,20 @@ public class AdjacencyMatrixGraph extends Graph {
      * @return  An {@link AdjacencyListGraph} instance.
      */
     public AdjacencyListGraph toAdjacencyListGraph(){
-        throw UNIMPL_METHOD;
+        AdjacencyListGraph adjListGraph = new AdjacencyListGraph();
+        IntStream.range(0, numNodes).forEach(ignored->adjListGraph.addNode());
+
+        addAllToGraph(adjListGraph);
+
+        return adjListGraph;
+    }
+
+    private void addAllToGraph(Graph graph){
+        if(numNodes > 0) {
+            for (int i = 0; i < matrix.length; i++)
+                for (int j = 0; j < matrix[i].length; j++)
+                    if (matrix[i][j] > 0)
+                        graph.addEdge(i, j, matrix[i][j]);
+        }
     }
 }
