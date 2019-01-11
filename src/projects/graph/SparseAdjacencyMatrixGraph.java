@@ -1,7 +1,10 @@
 package projects.graph;
 
-import java.util.Set;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
 
 /**
  * <p>{@link SparseAdjacencyMatrixGraph} is a {@link Graph} implemented as a <b>sparse adjacency matrix</b>, i.e a
@@ -50,14 +53,29 @@ public class SparseAdjacencyMatrixGraph extends Graph {
             this.dest = dest;
             this.weight = weight;
         }
-    }
 
-    private List<EdgeData> list;
+        @Override
+        public boolean equals(Object o){
+            if(o == null || o.getClass() != this.getClass())
+                return  false;
+            EdgeData oCasted = null;
+            try {
+                oCasted = (EdgeData)o;
+            } catch(ClassCastException ignored){
+                return false;
+            }
+            return  (oCasted.source == source) &&
+                    (oCasted.dest == dest) &&
+                    (oCasted.weight == weight);
+        }
+    }
 
     /* ***************************************************** */
     /* PLACE ANY EXTRA PRIVATE DATA MEMBERS OR METHODS HERE: */
     /* ***************************************************** */
 
+    private List<EdgeData> list; // This is a standard and safe usage of Java's generics.
+    private int nodeCount;
 
     /* ************************************************** */
     /* IMPLEMENT THE FOLLOWING PUBLIC METHODS. MAKE SURE  */
@@ -71,46 +89,58 @@ public class SparseAdjacencyMatrixGraph extends Graph {
     public SparseAdjacencyMatrixGraph(){
         // You might not want this constructor to do anything, depending on your design.
         // At any rate, DO NOT ERASE IT!
+        list = new LinkedList<>();
+        nodeCount = 0;
     }
 
     @Override
     public void addNode() {
-        throw UNIMPL_METHOD;
+        nodeCount++;
     }
 
     @Override
     public void addEdge(int source, int dest, int weight) {
-        throw UNIMPL_METHOD;
+        list.add(0, new EdgeData(source, dest, weight)); // addFront() for efficiency.
     }
 
     @Override
     public void deleteEdge(int source, int dest) {
-        throw UNIMPL_METHOD;
+        list.removeIf((EdgeData edge) -> (edge.source == source && edge.dest == dest));
     }
 
     @Override
     public boolean edgeBetween(int source, int dest) {
-        throw UNIMPL_METHOD;
+        for(EdgeData edge: list)
+            if(edge.source == source && edge.dest == dest)
+                return  true;
+        return false;
     }
 
     @Override
     public int getEdgeWeight(int source, int dest) {
-        throw UNIMPL_METHOD;
+        for(EdgeData edge : list)
+            if(edge.source == source && edge.dest == dest)
+                return edge.weight;
+        return 0;
     }
 
     @Override
     public Set<Integer> getNeighbors(int node) {
-        throw UNIMPL_METHOD;
+        Set<Integer> neighbors = new HashSet<>();
+        for(EdgeData edge : list)
+            if(edge.source == node)
+                neighbors.add(edge.source);
+        return neighbors;
     }
 
     @Override
     public int getNumNodes() {
-        throw UNIMPL_METHOD;
+        return nodeCount;
     }
 
     @Override
     public int getNumEdges() {
-        throw UNIMPL_METHOD;
+        return list.size();
     }
 
     /* Methods specific to this class follow. */
@@ -130,7 +160,10 @@ public class SparseAdjacencyMatrixGraph extends Graph {
      * @return An {@link AdjacencyMatrixGraph} instance.
      */
     public AdjacencyMatrixGraph toAdjacencyMatrixGraph(){
-        throw UNIMPL_METHOD;
+        AdjacencyMatrixGraph adjMat = new AdjacencyMatrixGraph();
+        IntStream.range(0, nodeCount).forEach(n->adjMat.addNode());
+        list.forEach(n->adjMat.addEdge(n.source, n.dest, n.weight));
+        return adjMat;
     }
 
     /**
@@ -143,6 +176,9 @@ public class SparseAdjacencyMatrixGraph extends Graph {
      * @return An {@link AdjacencyListGraph} instance.
      */
     public AdjacencyListGraph toAdjacencyListGraph(){
-        throw UNIMPL_METHOD;
+        AdjacencyListGraph adjListGraph = new AdjacencyListGraph();
+        IntStream.range(0, nodeCount).forEach(n->adjListGraph.addNode());
+        list.forEach(n->adjListGraph.addEdge(n.source, n.dest, n.weight));
+        return adjListGraph
     }
 }

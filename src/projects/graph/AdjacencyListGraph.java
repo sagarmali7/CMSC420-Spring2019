@@ -1,11 +1,11 @@
 package projects.graph;
 
+import projects.graph.utils.Neighbor;
+import projects.graph.utils.NeighborList;
+
 import java.util.HashSet;
 import java.util.Set;
-import java.util.List;
 import java.util.stream.IntStream;
-
-import projects.graph.utils.NeighborList;
 /**
  * <p>{@link AdjacencyListGraph} is a {@link Graph} implemented as an adjacency list, i.e a one-dimensional array of linked lists,
  * where A(i) is a linked list containing the neighbors of node i and the corresponding edges' weights. <b>The neighbors of a given node are defined as the nodes it  points to</b> (if any). </p>
@@ -100,7 +100,9 @@ public class AdjacencyListGraph extends Graph {
     @Override
     public Set<Integer> getNeighbors(int node) {
         assert node >= 0 && node < numNodes : "getNeighbors(): Invalid node parameter given: " + node + ".";
-        return list[node].toSet();
+        HashSet<Integer> neighbors = new HashSet<>();
+        list[node].forEach(n->neighbors.add(n.getNode()));
+        return neighbors;
     }
 
     @Override
@@ -125,11 +127,8 @@ public class AdjacencyListGraph extends Graph {
      */
     public AdjacencyMatrixGraph toAdjacencyMatrixGraph(){
         AdjacencyMatrixGraph graph = new AdjacencyMatrixGraph();
-        IntStream.range(0, numNodes).forEach(ignored->graph.addNode());
-        for(int i = 0; i < numNodes; i++)
-
-
-
+        addAllToGraph(graph);
+        return graph;
     }
 
     /**
@@ -141,6 +140,15 @@ public class AdjacencyListGraph extends Graph {
      * @return An instance of {@link AdjacencyMatrixGraph}.
      */
     public SparseAdjacencyMatrixGraph toSparseAdjacencyMatrixGraph(){
-        throw UNIMPL_METHOD;
+        SparseAdjacencyMatrixGraph graph = new SparseAdjacencyMatrixGraph();
+        addAllToGraph(graph);
+        return graph;
+    }
+
+    private void addAllToGraph(Graph graph){
+        IntStream.range(0, numNodes).forEach(ignored->graph.addNode());
+        for(int i = 0; i < numNodes; i++)
+            for(Neighbor n: list[i])
+                graph.addEdge(i, n.getNode(), n.getWeight());
     }
 }
