@@ -70,6 +70,12 @@ public class AdjacencyListGraph extends Graph {
         if(weight < 0 || weight > INFINITY)
             throw new RuntimeException("addEdge(): Weight given out of bounds (weight=" + weight + ").");
 
+        for(Neighbor neighbor: list[source]) {
+            if (neighbor.getNode() == dest) { // Edge already stored. Update the weight.
+                neighbor.setWeight(weight);
+                return;
+            }
+        }
         list[source].addFront(dest, weight);
         numEdges++;
     }
@@ -77,23 +83,25 @@ public class AdjacencyListGraph extends Graph {
 
     @Override
     public void deleteEdge(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "deleteEdge(): Invalid node parameters given: " +
                 "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
+        int neighborNum = list[source].getCount();
         list[source].remove(dest);
-        numEdges--;
+        if(list[source].getCount() != neighborNum) // Actually removed an edge
+            numEdges--;
     }
 
     @Override
     public boolean edgeBetween(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "edgeBetween(): Invalid node parameters given: " +
                 "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
         return list[source].containsNeighbor(dest);
     }
 
     @Override
     public int getEdgeWeight(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
+        if ( source < 0 || source >= numNodes || dest < 0 || dest >= numNodes )
+            return 0;
         return list[source].getWeight(dest);
     }
 
@@ -113,6 +121,12 @@ public class AdjacencyListGraph extends Graph {
     @Override
     public int getNumEdges() {
         return numEdges;
+    }
+
+    @Override
+    public void clear() {
+        numNodes = numEdges = 0;
+        list = new NeighborList[numNodes];
     }
 
     /* Methods specific to this class follow. */

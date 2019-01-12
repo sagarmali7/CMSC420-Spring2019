@@ -75,7 +75,7 @@ public class SparseAdjacencyMatrixGraph extends Graph {
     /* ***************************************************** */
 
     private List<EdgeData> list; // This is a standard and safe usage of Java's generics.
-    private int nodeCount;
+    private int numNodes;
 
     /* ************************************************** */
     /* IMPLEMENT THE FOLLOWING PUBLIC METHODS. MAKE SURE  */
@@ -90,21 +90,40 @@ public class SparseAdjacencyMatrixGraph extends Graph {
         // You might not want this constructor to do anything, depending on your design.
         // At any rate, DO NOT ERASE IT!
         list = new LinkedList<>();
-        nodeCount = 0;
+        numNodes = 0;
     }
 
     @Override
     public void addNode() {
-        nodeCount++;
+        numNodes++;
     }
 
     @Override
     public void addEdge(int source, int dest, int weight) {
-        list.add(0, new EdgeData(source, dest, weight)); // addFront() for efficiency.
+        // I throw an AssertionError if either node isn't within parameters. Behavior open to implementation according to docs.
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
+        if(weight < 0 || weight > INFINITY)
+            throw new RuntimeException("addEdge(): Weight given out of bounds (weight=" + weight + ").");
+
+        // We have to search for the element first before we add it.
+        // If we find it, this call is an update. An Iterator<EdgeData>
+        // will work well.
+        boolean found = false;
+        for(EdgeData edge: list) {
+            if (edge.source == source && edge.dest == dest) {
+                edge.weight = weight; // update.
+                found = true;
+            }
+        }
+        if(!found)
+            list.add(0, new EdgeData(source, dest, weight)); // addFront() for efficiency.
     }
 
     @Override
     public void deleteEdge(int source, int dest) {
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "deleteEdge(): Invalid node parameters given: " +
+                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
         list.removeIf((EdgeData edge) -> (edge.source == source && edge.dest == dest));
     }
 
@@ -129,18 +148,24 @@ public class SparseAdjacencyMatrixGraph extends Graph {
         Set<Integer> neighbors = new HashSet<>();
         for(EdgeData edge : list)
             if(edge.source == node)
-                neighbors.add(edge.source);
+                neighbors.add(edge.dest);
         return neighbors;
     }
 
     @Override
     public int getNumNodes() {
-        return nodeCount;
+        return numNodes;
     }
 
     @Override
     public int getNumEdges() {
         return list.size();
+    }
+
+    @Override
+    public void clear() {
+        list =  new LinkedList<>();
+        numNodes = 0;
     }
 
     /* Methods specific to this class follow. */
@@ -161,7 +186,7 @@ public class SparseAdjacencyMatrixGraph extends Graph {
      */
     public AdjacencyMatrixGraph toAdjacencyMatrixGraph(){
         AdjacencyMatrixGraph adjMat = new AdjacencyMatrixGraph();
-        IntStream.range(0, nodeCount).forEach(n->adjMat.addNode());
+        IntStream.range(0, numNodes).forEach(n->adjMat.addNode());
         list.forEach(n->adjMat.addEdge(n.source, n.dest, n.weight));
         return adjMat;
     }
@@ -177,8 +202,8 @@ public class SparseAdjacencyMatrixGraph extends Graph {
      */
     public AdjacencyListGraph toAdjacencyListGraph(){
         AdjacencyListGraph adjListGraph = new AdjacencyListGraph();
-        IntStream.range(0, nodeCount).forEach(n->adjListGraph.addNode());
+        IntStream.range(0, numNodes).forEach(n->adjListGraph.addNode());
         list.forEach(n->adjListGraph.addEdge(n.source, n.dest, n.weight));
-        return adjListGraph
+        return adjListGraph;
     }
 }

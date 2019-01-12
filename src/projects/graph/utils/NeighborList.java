@@ -94,6 +94,7 @@ public class NeighborList implements Iterable<Neighbor> {
         } else {
             head = new Node(node, weight, head);
         }
+        count++;
         modificationFlag = true;
     }
 
@@ -104,10 +105,11 @@ public class NeighborList implements Iterable<Neighbor> {
      * @return <tt>true</tt> if, and only if, node is a neighbor node of the node we called the method for, false otherwise.
      */
     public boolean containsNeighbor(int node) {
-        while (head != null) {
-            if (head.neighbor.getNode() == node)
+        Node current = head;
+        while (current != null) {
+            if (current.neighbor.getNode() == node)
                 return true;
-            head = head.next;
+            current = current.next;
         }
         return false;
     }

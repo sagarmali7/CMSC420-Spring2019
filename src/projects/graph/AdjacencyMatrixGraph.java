@@ -1,9 +1,7 @@
 package projects.graph;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -60,11 +58,22 @@ public class AdjacencyMatrixGraph extends Graph {
     @Override
     public void addNode() {
         int[][] oldMatrix = matrix;
-        matrix = new int[numNodes][numNodes];
-        for(int i = 0; i < numNodes - 1; i++)
-            matrix[i] = oldMatrix[i]; // Copy over the old rows instead of all the elements (O(V) instead of O(V^2))
-        matrix[numNodes - 1] = new int[numNodes]; // And add a last row of zeroes.
         numNodes++;
+        matrix = new int[numNodes][numNodes];
+        for(int i = 0; i < numNodes - 1; i++) {
+            matrix[i] = copyAndExpand(numNodes, oldMatrix[i]);
+        }
+        matrix[numNodes - 1] = new int[numNodes];
+    }
+
+    private int[] copyAndExpand(int length, int[] array){
+        assert array.length < length : "copyAndExpand(): provided array should be smaller than numNodes.";
+        int i;
+        int[] retVal = new int[length];
+        for(i = 0; i < array.length; i++) {
+            retVal[i] = array[i]; // The rest will be zeroes.
+        }
+        return retVal;
     }
 
     @Override
@@ -72,16 +81,19 @@ public class AdjacencyMatrixGraph extends Graph {
         // I throw an AssertionError if either node isn't within parameters. Behavior open to implementation according to docs.
         assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
             "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        if(weight < 0 || weight > INFINITY)
+        if(weight < 0 || weight > INFINITY) {
             throw new RuntimeException("addEdge(): Weight given out of bounds (weight=" + weight + ").");
+        }
+        if(matrix[source][dest]== 0) {// We don't want to update the num of edges
+            numEdges++;             // if addEdge() was called for a weight update.
+        }
         matrix[source][dest] = weight;
-        numEdges++;
     }
 
 
     @Override
     public void deleteEdge(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "deleteEdge(): Invalid node parameters given: " +
                 "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
         matrix[source][dest] = 0;
         numEdges--;
@@ -89,22 +101,29 @@ public class AdjacencyMatrixGraph extends Graph {
 
     @Override
     public boolean edgeBetween(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
+        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "edgeBetween(): Invalid node parameters given: " +
                 "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
         return matrix[source][dest] != 0;
     }
 
     @Override
     public int getEdgeWeight(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
+        if( source < 0 || source >= numNodes  ||  dest < 0 || dest >= numNodes) {
+            return 0;
+        }
         return matrix[source][dest];
     }
 
     @Override
     public Set<Integer> getNeighbors(int node) {
         assert node >= 0 && node < numNodes : "getNeighbors(): Invalid node parameter given: " + node + ".";
-        return Arrays.stream(matrix[node]).filter(n->n>0).boxed().collect(Collectors.toSet());
+        Set<Integer> neighbors = new HashSet<>();
+        for(int i = 0; i < numNodes; i++) {
+            if (matrix[node][i] > 0) {
+                neighbors.add(i);
+            }
+        }
+        return neighbors;
     }
 
     @Override
@@ -115,6 +134,12 @@ public class AdjacencyMatrixGraph extends Graph {
     @Override
     public int getNumEdges() {
         return numEdges;
+    }
+
+    @Override
+    public void clear() {
+        numNodes = numEdges = 0;
+        matrix = new int[numNodes][numNodes];
     }
 
 
@@ -160,10 +185,13 @@ public class AdjacencyMatrixGraph extends Graph {
 
     private void addAllToGraph(Graph graph){
         if(numNodes > 0) {
-            for (int i = 0; i < matrix.length; i++)
-                for (int j = 0; j < matrix[i].length; j++)
-                    if (matrix[i][j] > 0)
+            for (int i = 0; i < numNodes; i++) {
+                for (int j = 0; j < numNodes; j++) {
+                    if (matrix[i][j] > 0) {
                         graph.addEdge(i, j, matrix[i][j]);
+                    }
+                }
+            }
         }
     }
 }
