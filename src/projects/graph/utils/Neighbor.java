@@ -4,7 +4,7 @@ package projects.graph.utils;
  * connected, as well as the weight of the relevant edge. It provides simple construction methods, type-safe equality check,
  * accessors and mutators. </p>
  *
- * @author <a href="mailto:jason.filippou@gmail.com>Jason Filippou</a>
+ * @author <a href="mailto:jason.filippou@gmail.com">Jason Filippou</a>
  * @see NeighborList
  */
 public class Neighbor {

@@ -1,11 +1,8 @@
 package projects.graph;
 
-import projects.graph.utils.Neighbor;
 import projects.graph.utils.NeighborList;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.IntStream;
 /**
  * <p>{@link AdjacencyListGraph} is a {@link Graph} implemented as an adjacency list, i.e a one-dimensional array of linked lists,
  * where A(i) is a linked list containing the neighbors of node i and the corresponding edges' weights. <b>The neighbors of a given node are defined as the nodes it  points to</b> (if any). </p>
@@ -35,8 +32,6 @@ public class AdjacencyListGraph extends Graph {
     /* PLACE ANY EXTRA PRIVATE DATA MEMBERS OR METHODS HERE: */
     /* ***************************************************** */
 
-    private int numNodes, numEdges;
-
     /* ************************************************** */
     /* IMPLEMENT THE FOLLOWING PUBLIC METHODS. MAKE SURE  */
     /* YOU ERASE THE LINES THAT THROW EXCEPTIONS.         */
@@ -47,86 +42,53 @@ public class AdjacencyListGraph extends Graph {
      * even if you don't do anything with it.
      */
     public AdjacencyListGraph(){
-        // You might not want this constructor to do anything, depending on your design.
-        // At any rate, DO NOT ERASE IT!
-        numNodes = numEdges = 0;
-        list = new NeighborList[numNodes];
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void addNode() {
-        NeighborList[] old = list;
-        list = new NeighborList[list.length + 1];
-        for(int i = 0; i < list.length - 1; i++)
-            list[i] = old[i];
-        list[list.length - 1] = new NeighborList();
-        numNodes++;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void addEdge(int source, int dest, int weight) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        if(weight < 0 || weight > INFINITY)
-            throw new RuntimeException("addEdge(): Weight given out of bounds (weight=" + weight + ").");
-
-        for(Neighbor neighbor: list[source]) {
-            if (neighbor.getNode() == dest) { // Edge already stored. Update the weight.
-                neighbor.setWeight(weight);
-                return;
-            }
-        }
-        list[source].addFront(dest, weight);
-        numEdges++;
+        throw UNIMPL_METHOD;
     }
 
 
     @Override
     public void deleteEdge(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "deleteEdge(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        int neighborNum = list[source].getCount();
-        list[source].remove(dest);
-        if(list[source].getCount() != neighborNum) // Actually removed an edge
-            numEdges--;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public boolean edgeBetween(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "edgeBetween(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        return list[source].containsNeighbor(dest);
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getEdgeWeight(int source, int dest) {
-        if ( source < 0 || source >= numNodes || dest < 0 || dest >= numNodes )
-            return 0;
-        return list[source].getWeight(dest);
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public Set<Integer> getNeighbors(int node) {
-        assert node >= 0 && node < numNodes : "getNeighbors(): Invalid node parameter given: " + node + ".";
-        HashSet<Integer> neighbors = new HashSet<>();
-        list[node].forEach(n->neighbors.add(n.getNode()));
-        return neighbors;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getNumNodes() {
-        return numNodes;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getNumEdges() {
-        return numEdges;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void clear() {
-        numNodes = numEdges = 0;
-        list = new NeighborList[numNodes];
+        throw UNIMPL_METHOD;
     }
 
     /* Methods specific to this class follow. */
@@ -140,9 +102,7 @@ public class AdjacencyListGraph extends Graph {
      * @return An instance of {@link AdjacencyMatrixGraph}.
      */
     public AdjacencyMatrixGraph toAdjacencyMatrixGraph(){
-        AdjacencyMatrixGraph graph = new AdjacencyMatrixGraph();
-        addAllToGraph(graph);
-        return graph;
+        throw UNIMPL_METHOD;
     }
 
     /**
@@ -154,15 +114,6 @@ public class AdjacencyListGraph extends Graph {
      * @return An instance of {@link AdjacencyMatrixGraph}.
      */
     public SparseAdjacencyMatrixGraph toSparseAdjacencyMatrixGraph(){
-        SparseAdjacencyMatrixGraph graph = new SparseAdjacencyMatrixGraph();
-        addAllToGraph(graph);
-        return graph;
-    }
-
-    private void addAllToGraph(Graph graph){
-        IntStream.range(0, numNodes).forEach(ignored->graph.addNode());
-        for(int i = 0; i < numNodes; i++)
-            for(Neighbor n: list[i])
-                graph.addEdge(i, n.getNode(), n.getWeight());
+        throw UNIMPL_METHOD;
     }
 }

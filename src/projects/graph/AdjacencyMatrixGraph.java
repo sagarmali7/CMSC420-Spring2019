@@ -1,8 +1,6 @@
 package projects.graph;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 /**
  * <p>{@link AdjacencyMatrixGraph} is a {@link Graph} implemented as an <b>adjacency matrix</b>. An adjacency matrix
@@ -37,7 +35,6 @@ public class AdjacencyMatrixGraph extends Graph {
     /* ***************************************************** */
     /* PLACE ANY EXTRA PRIVATE DATA MEMBERS OR METHODS HERE: */
     /* ***************************************************** */
-    private int numNodes, numEdges;
 
     /* ************************************************** */
     /* IMPLEMENT THE FOLLOWING PUBLIC METHODS. MAKE SURE  */
@@ -49,97 +46,58 @@ public class AdjacencyMatrixGraph extends Graph {
      * even if you don't do anything with it.
      */
     public AdjacencyMatrixGraph(){
-        // You might not want this constructor to do anything, depending on your design.
-        // At any rate, DO NOT ERASE IT!
-        numNodes = numEdges = 0;
-        matrix = new int[numNodes][numNodes];
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void addNode() {
-        int[][] oldMatrix = matrix;
-        numNodes++;
-        matrix = new int[numNodes][numNodes];
-        for(int i = 0; i < numNodes - 1; i++) {
-            matrix[i] = copyAndExpand(numNodes, oldMatrix[i]);
-        }
-        matrix[numNodes - 1] = new int[numNodes];
+        throw UNIMPL_METHOD;
     }
 
     private int[] copyAndExpand(int length, int[] array){
-        assert array.length < length : "copyAndExpand(): provided array should be smaller than numNodes.";
-        int i;
-        int[] retVal = new int[length];
-        for(i = 0; i < array.length; i++) {
-            retVal[i] = array[i]; // The rest will be zeroes.
-        }
-        return retVal;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void addEdge(int source, int dest, int weight) {
         // I throw an AssertionError if either node isn't within parameters. Behavior open to implementation according to docs.
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
-            "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        if(weight < 0 || weight > INFINITY) {
-            throw new RuntimeException("addEdge(): Weight given out of bounds (weight=" + weight + ").");
-        }
-        if(matrix[source][dest]== 0) {// We don't want to update the num of edges
-            numEdges++;             // if addEdge() was called for a weight update.
-        }
-        matrix[source][dest] = weight;
+        throw UNIMPL_METHOD;
     }
 
 
     @Override
     public void deleteEdge(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "deleteEdge(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        matrix[source][dest] = 0;
-        numEdges--;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public boolean edgeBetween(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "edgeBetween(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        return matrix[source][dest] != 0;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getEdgeWeight(int source, int dest) {
-        if( source < 0 || source >= numNodes  ||  dest < 0 || dest >= numNodes) {
-            return 0;
-        }
-        return matrix[source][dest];
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public Set<Integer> getNeighbors(int node) {
-        assert node >= 0 && node < numNodes : "getNeighbors(): Invalid node parameter given: " + node + ".";
-        Set<Integer> neighbors = new HashSet<>();
-        for(int i = 0; i < numNodes; i++) {
-            if (matrix[node][i] > 0) {
-                neighbors.add(i);
-            }
-        }
-        return neighbors;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getNumNodes() {
-        return numNodes;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getNumEdges() {
-        return numEdges;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void clear() {
-        numNodes = numEdges = 0;
-        matrix = new int[numNodes][numNodes];
+        throw UNIMPL_METHOD;
     }
 
 
@@ -156,12 +114,7 @@ public class AdjacencyMatrixGraph extends Graph {
      * @return A {@link SparseAdjacencyMatrixGraph} instance.
      */
     public SparseAdjacencyMatrixGraph toSparseAdjacencyMatrixGraph(){
-        SparseAdjacencyMatrixGraph spAdjMatGraph = new SparseAdjacencyMatrixGraph();
-        IntStream.range(0, numNodes).forEach(ignored->spAdjMatGraph.addNode());
-
-        addAllToGraph(spAdjMatGraph);
-
-        return spAdjMatGraph;
+        throw UNIMPL_METHOD;
     }
 
     /**
@@ -175,23 +128,6 @@ public class AdjacencyMatrixGraph extends Graph {
      * @return  An {@link AdjacencyListGraph} instance.
      */
     public AdjacencyListGraph toAdjacencyListGraph(){
-        AdjacencyListGraph adjListGraph = new AdjacencyListGraph();
-        IntStream.range(0, numNodes).forEach(ignored->adjListGraph.addNode());
-
-        addAllToGraph(adjListGraph);
-
-        return adjListGraph;
-    }
-
-    private void addAllToGraph(Graph graph){
-        if(numNodes > 0) {
-            for (int i = 0; i < numNodes; i++) {
-                for (int j = 0; j < numNodes; j++) {
-                    if (matrix[i][j] > 0) {
-                        graph.addEdge(i, j, matrix[i][j]);
-                    }
-                }
-            }
-        }
+        throw UNIMPL_METHOD;
     }
 }

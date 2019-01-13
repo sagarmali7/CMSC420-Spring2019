@@ -1,9 +1,7 @@
 package projects.graph;
 
-import projects.graph.utils.PriorityQueueNode;
-
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <p>{@link Graph} is an abstraction over directed and weighted graphs. It supports insertion of nodes, insertion
@@ -156,73 +154,6 @@ public abstract class Graph {
      * @return An ordered {@link List} whose first (head) element is source, the last (tail) element is dest
      * and all the intermediate nodes make up the path from source to dest.
      */
-    public List<Integer> shortestPath(int source, int dest){
-        int insertionOrder = 0;
-        // We will implement shortestPath through Dijkstra's algorithm.
-        PriorityQueue<PriorityQueueNode> pqueue = new PriorityQueue<>((o1, o2) -> {
-            if(o1.getDistance() < o2.getDistance())
-                return -1;
-            else if (o1.getDistance() > o2.getDistance())
-                return 1;
-            else
-                return o1.getOrder() < o2.getOrder() ? -1 : 1; // 0 will never be returned by this method
-        });
-        final int UNDEF_PARENT = -1;
-        HashMap<Integer, Integer> dist = new HashMap<>(), pred = new HashMap<>();
+    public List<Integer> shortestPath(int source, int dest){ throw UNIMPL_METHOD; }
 
-        // Initialize structures and algorithm.
-        IntStream.range(0, getNumNodes()).forEach(node->{
-            dist.put(node, INFINITY);
-            pred.put(node, UNDEF_PARENT);
-        });
-        // When adding the source node to the pqueue, we will add it
-        // with a distance of 0, so that it's the first element polled from
-        // the pqueue. However, we will add it to the distance hash as if it has
-        // a distance of infinity, since we might want to compute the shortest path
-        // from the source node to itself (i.e dest == source)
-        pqueue.add(new PriorityQueueNode(source,  0, insertionOrder++));
-        dist.put(source, INFINITY); // In case we want to
-
-        // Main loop of the algorithm
-        boolean expandedSource = false;
-        while(!pqueue.isEmpty()){
-            int nodeToExpand = pqueue.poll().getNode(); // getMin
-            if(nodeToExpand == dest && expandedSource){
-                break;
-            }
-            expandedSource = true;
-            for(Integer neighbor : getNeighbors(nodeToExpand)){
-                int newDist = dist.get(nodeToExpand) + getEdgeWeight(nodeToExpand, neighbor);
-                if(newDist < dist.get(neighbor)){
-                    dist.put(neighbor, newDist);
-                    pred.put(neighbor, nodeToExpand);
-                    // The call pqueue.contains(...) is rather inefficient, but we are forced to
-                    // implement the algorithm in this way in the absence of a heap that allows
-                    // an efficient decreasePriority() operation (like a Fibonacci heap). This is
-                    // quite alright for the purposes of this project.
-                    if(!pqueue.contains(new PriorityQueueNode(neighbor, insertionOrder))) { // Will call PriorityQueueNode::equals().
-                        pqueue.add(new PriorityQueueNode(neighbor, dist.get(neighbor), insertionOrder++));
-                    }
-                }
-
-            }
-        }
-
-        // Re-create the path via backpointers.
-        return readPath(source, dest, pred);
-    }
-
-    private List<Integer> readPath(int source, int dest, HashMap<Integer, Integer> pred){
-        List<Integer> path = new ArrayList<>(); // We prefer an ArrayList<Integer> to make the tests run more efficiently.
-        path.add(0, dest);
-        int parent = pred.get(dest);
-        while(parent != source) {
-            if(parent == -1)
-                return new ArrayList<>(); // An empty list.
-            path.add(0, parent);
-            parent = pred.get(parent);
-        }
-        path.add(0, source);
-        return path;
-    }
 }

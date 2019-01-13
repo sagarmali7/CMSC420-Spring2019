@@ -7,7 +7,7 @@ import java.util.Iterator;
  * <p>{@link NeighborList} is a simple linked list with head and tail references. It offers constant-time addition to the
  * front and the back. It also offers methods for searching and deletion.</p>
  *
- * <p>The only reason for the existence of this list is because {@link projects.graph.AdjacencyListGraph}</p> contains a single-dimensional
+ * <p>The only reason for the existence of this list is because {@link projects.graph.AdjacencyListGraph} contains a single-dimensional
  * raw array over lists of nodes. Creating a raw array of generics in Java is a pain, with several castings that are usually unsafe and
  * flagged by the compiler as such (or making the runtime vulnerable). See the writeup for more.</p>
  *

@@ -1,10 +1,7 @@
 package projects.graph;
 
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 /**
  * <p>{@link SparseAdjacencyMatrixGraph} is a {@link Graph} implemented as a <b>sparse adjacency matrix</b>, i.e a
@@ -70,12 +67,11 @@ public class SparseAdjacencyMatrixGraph extends Graph {
         }
     }
 
+    private List<EdgeData> list; // This is a standard and safe usage of Java's generics.
+
     /* ***************************************************** */
     /* PLACE ANY EXTRA PRIVATE DATA MEMBERS OR METHODS HERE: */
     /* ***************************************************** */
-
-    private List<EdgeData> list; // This is a standard and safe usage of Java's generics.
-    private int numNodes;
 
     /* ************************************************** */
     /* IMPLEMENT THE FOLLOWING PUBLIC METHODS. MAKE SURE  */
@@ -87,85 +83,52 @@ public class SparseAdjacencyMatrixGraph extends Graph {
      * even if you don't do anything with it.
      */
     public SparseAdjacencyMatrixGraph(){
-        // You might not want this constructor to do anything, depending on your design.
-        // At any rate, DO NOT ERASE IT!
-        list = new LinkedList<>();
-        numNodes = 0;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void addNode() {
-        numNodes++;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void addEdge(int source, int dest, int weight) {
-        // I throw an AssertionError if either node isn't within parameters. Behavior open to implementation according to docs.
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "addEdge(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        if(weight < 0 || weight > INFINITY)
-            throw new RuntimeException("addEdge(): Weight given out of bounds (weight=" + weight + ").");
-
-        // We have to search for the element first before we add it.
-        // If we find it, this call is an update. An Iterator<EdgeData>
-        // will work well.
-        boolean found = false;
-        for(EdgeData edge: list) {
-            if (edge.source == source && edge.dest == dest) {
-                edge.weight = weight; // update.
-                found = true;
-            }
-        }
-        if(!found)
-            list.add(0, new EdgeData(source, dest, weight)); // addFront() for efficiency.
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void deleteEdge(int source, int dest) {
-        assert ( source >= 0 && source < numNodes ) && ( dest >= 0 && dest < numNodes ) : "deleteEdge(): Invalid node parameters given: " +
-                "source=" + source + ", dest=" + dest  +" and numNodes=" + numNodes + ".";
-        list.removeIf((EdgeData edge) -> (edge.source == source && edge.dest == dest));
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public boolean edgeBetween(int source, int dest) {
-        for(EdgeData edge: list)
-            if(edge.source == source && edge.dest == dest)
-                return  true;
-        return false;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getEdgeWeight(int source, int dest) {
-        for(EdgeData edge : list)
-            if(edge.source == source && edge.dest == dest)
-                return edge.weight;
-        return 0;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public Set<Integer> getNeighbors(int node) {
-        Set<Integer> neighbors = new HashSet<>();
-        for(EdgeData edge : list)
-            if(edge.source == node)
-                neighbors.add(edge.dest);
-        return neighbors;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getNumNodes() {
-        return numNodes;
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public int getNumEdges() {
-        return list.size();
+        throw UNIMPL_METHOD;
     }
 
     @Override
     public void clear() {
-        list =  new LinkedList<>();
-        numNodes = 0;
+        throw UNIMPL_METHOD;
     }
 
     /* Methods specific to this class follow. */
@@ -185,10 +148,7 @@ public class SparseAdjacencyMatrixGraph extends Graph {
      * @return An {@link AdjacencyMatrixGraph} instance.
      */
     public AdjacencyMatrixGraph toAdjacencyMatrixGraph(){
-        AdjacencyMatrixGraph adjMat = new AdjacencyMatrixGraph();
-        IntStream.range(0, numNodes).forEach(n->adjMat.addNode());
-        list.forEach(n->adjMat.addEdge(n.source, n.dest, n.weight));
-        return adjMat;
+        throw UNIMPL_METHOD;
     }
 
     /**
@@ -201,9 +161,6 @@ public class SparseAdjacencyMatrixGraph extends Graph {
      * @return An {@link AdjacencyListGraph} instance.
      */
     public AdjacencyListGraph toAdjacencyListGraph(){
-        AdjacencyListGraph adjListGraph = new AdjacencyListGraph();
-        IntStream.range(0, numNodes).forEach(n->adjListGraph.addNode());
-        list.forEach(n->adjListGraph.addEdge(n.source, n.dest, n.weight));
-        return adjListGraph;
+        throw UNIMPL_METHOD;
     }
 }

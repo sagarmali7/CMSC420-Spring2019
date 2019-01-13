@@ -2,7 +2,6 @@
 /bin
 /out
 /build
-*.class
 *.exe
 *.a
 *.o
@@ -12,7 +11,6 @@
 
 ### IntelliJ / Eclipse - related
 /.idea
-*.iml
 *.eclipse
 
 ### Hidden and backup files of OSs
@@ -30,8 +28,5 @@
 *.nav
 *.bst
 
-
-
-# Mac OS
-
+### Mac OS
 /.DS_Store/
