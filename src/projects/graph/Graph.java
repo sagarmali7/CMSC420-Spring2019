@@ -122,7 +122,7 @@ public abstract class Graph {
 
     /** <p>Returns the shortest path between source and dest in the graph, where the shortest path
      * is defined as the path with a minimal sum of weights of the constituent edges. Since we don't allow
-     * negative weight edges, you can implement this with either Dijkstra's or the Bellman-Ford algorithm, whichever one
+     * negative weight edges, you can implement this with Dijkstra's, Bellman-Ford or Johnson's algorithm, whichever one
      * you prefer!</p>
      *
      * <p>Shortest path computation only requires methods of {@link Graph}'s interface (i.e the other public
@@ -134,7 +134,8 @@ public abstract class Graph {
      *      <li>The code will have to be <b>your own</b>. No taking ready-made libraries out there, whether they
      *       are part of Oracle's standard library or not. However, if you choose to implement Dijkstra's algorithm,
      *       you <b>are</b> allowed to use a third-party implementation of a <b>priority queue</b>, which is a data
-     *       structure required for an efficient implementation of Dijkstra's.</li>
+     *       structure required for an efficient implementation of Dijkstra's. You can also use other ready-made
+     *       data structures, such as hash tables or lists.</li>
      *
      *      <li>If either source or dest are not part of the graph, the behavior is <b>undefined</b>
      *          (we don't test for this case).</li>
