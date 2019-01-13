@@ -54,10 +54,6 @@ public class AdjacencyMatrixGraph extends Graph {
         throw UNIMPL_METHOD;
     }
 
-    private int[] copyAndExpand(int length, int[] array){
-        throw UNIMPL_METHOD;
-    }
-
     @Override
     public void addEdge(int source, int dest, int weight) {
         // I throw an AssertionError if either node isn't within parameters. Behavior open to implementation according to docs.
